@@ -7,7 +7,7 @@ const reviewModel = new mongoose.Schema({
     bookId: {
         type: ObjectId,
         required: true,
-        ref: "Book"
+        ref: "books"
     },
     reviewedBy: {
         type: String,
@@ -33,6 +33,15 @@ const reviewModel = new mongoose.Schema({
     isDeleted: {
         type: Boolean,
         default: false
+    },
+    userId:{
+        type: ObjectId,
+        required: true,
+        ref: "user"
+    },
+    userid:{
+        type: ObjectId,
+        required:true
     }
 
 

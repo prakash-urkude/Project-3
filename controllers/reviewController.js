@@ -1,22 +1,22 @@
-const reviewModel = require('../model/reviewModel')
-const bookModel = require('../model/bookModel')
+const reviewModel = require('../models/reviewModel')
+const bookModel = require('../models/bookModel')
 const ObjectId = require('mongoose').Types.ObjectId
-const { checkInputsPresent, checkString, validateName,isvalidName } = require('../validator/validator')
+const { checkInputsPresent, checkString, validateName,isvalidName } = require('../validators/validators')
 const{isValidObjectId}=require("mongoose")
 
 const createReview = async (req, res) => {
     try {
 
         let BookId = req.params.bookId
-        let data = req.body
-
-        let { review, rating, reviewedBy, ...rest } = data
-
         
+        let data = req.body
+        console.log(data)
+        let { review, rating, reviewedBy, userId ,userid, ...rest } = data
+
         if (!ObjectId.isValid(BookId)) { return res.status(400).send({ status: false, message: `This BookId: ${BookId} is not Valid.` }) }
 
         if (!checkInputsPresent(data)) { return res.status(400).send({ status: false, message: "Please Provide Details to Create Review." }) }
-        if (checkInputsPresent(rest)) { return res.status(400).send({ status: false, message: "You have to put only review & rating & reviewedBy,." }) }
+        if (checkInputsPresent(rest)) { return res.status(400).send({ status: false, message: "You have to put only review & rating & userId & reviewedBy,." }) }
 
     
         let checkBookId = await bookModel.findOne({ _id: BookId, isDeleted: false })
@@ -26,9 +26,9 @@ const createReview = async (req, res) => {
             if (!checkString(reviewedBy) || !validateName(reviewedBy)) return res.status(400).send({ status: false, message: "Please Provide Valid Name in reviewedBy or Delete the key()." });
         }
 
-        if (data.hasOwnProperty('review')) {
-            if (!checkString(review) || !validateName(review)) return res.status(400).send({ status: false, message: "Please Provide Valid Review." });
-        }
+        // if (data.hasOwnProperty('review')) {
+        //     if (!checkString(review) || !validateName(review)) return res.status(400).send({ status: false, message: "Please Provide Valid Review." });
+        // }
 
        
         if (data.hasOwnProperty('rating')) {
@@ -43,7 +43,7 @@ const createReview = async (req, res) => {
         data.reviewedAt = Date.now()
 
         let createReview = await reviewModel.create(data)
-
+//increasing revire count
         let updateBookData = await bookModel.findByIdAndUpdate({ _id: BookId }, { $inc: { reviews: 1 } }, { new: true })
 
         let details = {
@@ -52,11 +52,13 @@ const createReview = async (req, res) => {
             reviewedBy: createReview.reviewedBy,
             reviewedAt: createReview.reviewedAt,
             rating: createReview.rating,
-            review: createReview.review
+            review: createReview.review,
+            userId: userId,
+            userid: userid
         }
 
         updateBookData._doc.reviewsData = details
-
+        console.log(updateBookData)
         res.status(201).send({ status: true, message: "Review added successfully", data: updateBookData })
 
     } catch (error) {
@@ -65,6 +67,23 @@ const createReview = async (req, res) => {
     }
 
 }
+//---------------------get review---------------------------------------------------
+const getBookreviewbyId= async function(req,res){
+    try{
+        let reviewId=req.params.id
+        console.log(`73no. line ${reviewId}`)
+        // if(!isValidObjectId(bookId)) return res.status(400).send({status:false,message:"Please provide valid bookId"})
+        
+        const review =await reviewModel.findById({_id:reviewId, isDeleted:false})
+        console.log(review)
+        if(!review || review.review.trim().length ==0 ) return res.status(404).send({status:false,message:"No review exist with this Id"})
+         
+        
+        return res.status(200).send({status:true,message:"book List", book: review})
+    }catch(error){
+        return res.status(500).send({status:false,message:error.message})
+    }
+    }
 
 //-------------------update review-------------------------------------------------
 const updateReview = async function (req, res) {
@@ -135,4 +154,4 @@ const deletereview= async function(req,res){
     }
     }
 
-module.exports={createReview,deletereview,updateReview}
+module.exports={createReview,deletereview,updateReview, getBookreviewbyId}

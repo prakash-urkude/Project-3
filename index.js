@@ -4,7 +4,7 @@ const morgan = require("morgan");
 const colors = require("colors");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
-const multer =require("multer")
+
 
 //env config
 dotenv.config();
@@ -42,3 +42,4 @@ app.listen(PORT, () => {
       .white
   );
 });
+

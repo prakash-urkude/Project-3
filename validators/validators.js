@@ -6,7 +6,7 @@ const checkString = function (value) {
     return true
 }
 
-const validateName = (value) => { return (/^(?=.{1,50}$)[a-z]+(?:['_.\s][a-z]+)*$/i.test(value)); }
+const validateName = (value) => { return (/^(?=.{1,50}$)[a-zA-Z]+(?:['_.\s][a-zA-Z]+)*$/i.test(value)); }
 const validateEmail = (value) => { return (/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/.test(value)); }
 const validatePassword = (value) => { return (/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,15}$/.test(value)); }
 const validateMobileNo = (value) => { return ((/^((\+91)?|91)?[6789][0-9]{9}$/g).test(value)); }

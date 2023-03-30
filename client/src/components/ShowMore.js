@@ -1,0 +1,215 @@
+import * as React from 'react';
+import Button from '@mui/material/Button';
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import CardMedia from '@mui/material/CardMedia';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { Box, IconButton } from "@mui/material";
+import { CardActionArea } from '@mui/material';
+import axios from 'axios';
+import Rating from '@mui/material/Rating';
+import "slick-carousel/slick/slick.css";
+import ReviewCard from "../components/ReviewCard";
+import { useNavigate } from "react-router-dom";
+
+const ShowMore = () => {
+  const { id } = useParams();
+  const [bookData, setBookData] = useState({});
+  const [review, setReview] = useState("");
+  const [rating, setRating] = useState(0);
+  const [isUser, setIsUser] = useState(false);
+  const name = localStorage.getItem("name");
+  const userId = localStorage.getItem("userId"), isLogin = userId ? true : false;
+
+  // var isUser = false
+   const navigate = useNavigate();
+  //edit
+  const handleEdit = () => {
+    navigate(`/book-details/${id}`);
+  };
+
+  //delete
+  const handleDelete = async () => {
+    try {
+      const confirmed = window.confirm("Are you sure you want to delete?");
+      if (confirmed) {
+      const { data } = await axios.delete(`http://localhost:3001/delete-book/${id}`);
+      console.log(data)
+      if (data?.status) {
+        alert("Book Deleted");
+        window.location.reload();
+      }
+    }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  // get bookData
+  async function getBookDetail() {
+    try {
+      const response = await axios.get(`http://localhost:3001/get-book/${id}`);
+      if (response && response.data) {
+        console.log(response.data.book.userId)
+        const isUser = userId === response.data.book.userId?true:false
+       await setBookData(response.data);
+       await setIsUser(isUser);
+        console.log(userId, bookData)
+      }
+    } catch (error) {
+      window.alert(error.response.data.message);
+    }
+  }
+
+  useEffect(() => {
+    getBookDetail();
+  }, [id]);
+  
+  
+
+// console.log(bookData.book.userId) 
+
+
+//create card
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const { data } = await axios.post(`http://localhost:3001/books/${id}/review`, {
+        review:review,
+        rating:rating,
+        reviewedBy: name,
+        userId: userId,
+        userid: userId
+      });
+      // window.location.reload();
+      setReview("")
+      setRating(0)
+
+      if (data) {
+        window.alert("Review added.");
+      }
+    } catch (error) {
+      alert(error.response.data.message);
+    }
+  };
+  // console.log(bookData)
+console.log(isUser)
+  return (
+    <div style={{ position: 'relative', width: '45%', height: '600px' }}>
+      {bookData && (
+        <CardActionArea style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }}>
+          {bookData.book && (
+          <CardMedia
+            component='img'
+            height='100%'
+            image={bookData.book.image}
+            style={{ position: 'absolute', top: '5%', left: '5%' }}
+          />
+          )}
+          <CardContent
+            style={{
+              position: 'absolute',
+              top: '5%',
+              left: '110%',
+              width: '100%',
+              border: '5px solid #ccc',
+              borderRadius: '5px',
+              padding: '20px'
+            }}
+          >
+            {bookData.book && (
+              <Box style={{ display: "grid",  gridTemplateRows: "repeat(3, 1fr)", gap: "1rem" }}>
+            <Typography gutterBottom variant='h5' component='div' >
+              {bookData.book.title}
+            </Typography>
+            <Box sx={{ display: "flex" }}>
+            {
+
+    isUser &&
+    (
+      <>
+        <Box display={"flex"}>
+          <IconButton onClick={handleEdit} sx={{ marginLeft: "auto" }}>
+            <ModeEditIcon color="info" />
+          </IconButton >
+        
+          <IconButton onClick={handleDelete}>
+            <DeleteIcon color="error" />
+          </IconButton>
+        </Box>
+      </>
+    )}
+  </Box>
+            </Box>
+            )}
+            {bookData.book && (
+            <Typography variant='body2' color='text.secondary'>
+              {bookData.book.excerpt}
+            </Typography>
+            )}
+            <br />
+            <Typography gutterBottom variant='h6' component='div'>
+              Rate this book:
+            </Typography>
+            <Rating
+              name='rating'
+              value={rating}
+              onChange={(event, newValue) => {
+                setRating(newValue);
+              }}
+            />
+            <br />
+            <form onSubmit={handleSubmit}>
+              <div>
+                <Typography gutterBottom variant='h8' component='div'>
+                  Write a review:
+                </Typography>
+                <br />
+                <textarea
+                  id='review'
+                  name='review'
+                  value={review}
+                  onChange={(e) => setReview(e.target.value)}
+                  rows={4}
+                  cols={50}
+                  style={{ width: '100%', maxHeight: '200px', resize: 'none' }} 
+                ></textarea>
+              </div>
+              <br />
+              <Box sx={{ display: "flex" }}>
+        <Button onClick={handleSubmit} variant="contained" >Submit</Button>
+        
+        </Box> 
+          </form>
+          <Box style={{ margin: "1rem 0" }}>
+              <Slider dots={true} infinite={true} slidesToShow={1} slidesToScroll={1} >
+               {bookData.book &&
+                  bookData.book.reviewData.map((review) => (
+                    <div style={{ margin: "8 8rem" }}>
+                     <ReviewCard
+            name={review.reviewedBy}
+            id={review._id}
+            isUser={localStorage.getItem("userId") === review._id}
+            rating={review.rating}
+            review={review.review}
+          />
+        </div>
+      ))}
+  </Slider>
+</Box>
+
+        </CardContent>
+      </CardActionArea>
+       )}
+    </div>
+  );
+};
+
+export default ShowMore;
+

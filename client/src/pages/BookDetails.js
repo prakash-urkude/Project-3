@@ -6,24 +6,28 @@ const BookDetails = () => {
 
   const [book, setBook] = useState({});
   const id = useParams().id;
+
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({});
-  // get book details
+  // get book details - book details leke setbook me daal rhe
   const getBookDetail = async () => {
     try {
-      const { data } = await axios.get(`http://localhost:3001/get-book/${id}`);                        //getByParams
+      const { data } = await axios.get(`http://localhost:3001/get-book/${id}`);                        
+     console.log(data)
       if (data?.status) {
-        setBook(data?.book);
-        // console.log(data)
-        
+        setBook(data);
+        // console.log(data.book.title)
         setInputs({
           title: data?.book.title,
-          description: data?.book.excerpt,
+          excerpt: data?.book.excerpt,
           image: data?.book.image,
+          ISBN: data?.book.ISBN,
+          releasedAt:data?.book.releasedAt
         });
+        // console.log(data)
       }
     } catch (error) {
-      console.log(error);
+      window.alert(error.response.data.message);
     }
   };
 
@@ -37,23 +41,26 @@ const BookDetails = () => {
       ...prevState,
       [e.target.name]: e.target.value,
     }));
+    console.log(inputs)
   };
- //update/edit
+ //update/edit  - and user jo inputs daal rha h usko yaha set krke bhej rhe, and waha se aane wala data store kr rhe variable me
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const { data } = await axios.put(`http://localhost:3001/update-book/${id}`, {
         title: inputs.title,
-        description: inputs.description,
+        excerpt: inputs.excerpt,
         image: inputs.image,
-        user: id,
+        ISBN : inputs.ISBN,
+        userId: localStorage.getItem("userId"),
       });
+      console.log(data)
       if (data?.status) {
         window.alert("Book Updated");
         navigate("/my-books");
       }
     } catch (error) {
-      console.log(error);
+      window.alert(error.response.data.message);
     }
   };
     return ( 
@@ -77,7 +84,7 @@ const BookDetails = () => {
             padding={3}
             color="gray"
           >
-            Create A Book
+            Update A Book
           </Typography>
           <InputLabel
             sx={{ mb: 1, mt: 2, fontSize: "24px", fontWeight: "bold" }}
@@ -131,7 +138,7 @@ const BookDetails = () => {
             variant="outlined"
             required
           />
-          <InputLabel
+          {/* <InputLabel
             sx={{ mb: 1, mt: 2, fontSize: "24px", fontWeight: "bold" }}
           >
             category
@@ -156,7 +163,7 @@ const BookDetails = () => {
             margin="normal"
             variant="outlined"
             required
-          />
+          /> */}
           <InputLabel
             sx={{ mb: 1, mt: 2, fontSize: "24px", fontWeight: "bold" }}
           >

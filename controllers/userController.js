@@ -1,4 +1,6 @@
 const userModel= require("../models/userModel")
+const reviewModel= require("../models/reviewModel")
+
 const Jwt = require('jsonwebtoken')
 const { checkInputsPresent, checkString, validatePincode, validateName, validateEmail, validatePassword, validateTitle, validateMobileNo } = require('../validators/validators.js')
 
@@ -9,7 +11,7 @@ const createUser= async function(req,res){
     try{
 
         let data = req.body;
-console.log(data)
+
         let { title, name, phone, email, password, street , city, pincode} = data
 
         if (!checkInputsPresent(data)) return res.status(400).send({ status: false, message: "Request Can't Be Empty." });
@@ -71,11 +73,12 @@ const login = async function(req,res){
         if (!validatePassword(password)) { return res.status(400).send({ status: false, message: "Re-enter your Correct Password." }) }
 
     let data2 = await userModel.findOne({email:email,password:password})
+    
     if (!data2) { return res.status(401).send({ status: false, message: "Invalid Login Credentials! You need to register first." }) }
 
-    let token = Jwt.sign({ userId: data2['_id']}, "SubodhPal@123", { expiresIn:"1d" })
+    let token = Jwt.sign({ userId: data2['_id']}, "SubodhPal@123", { expiresIn:"10d" })
 
-    res.status(200).send({ status: true, message: "Token Created Sucessfully", data: {token:token , userId: data2._id}})
+    res.status(200).send({ status: true, message: "Token Created Sucessfully", data: {token:token , userId: data2}})
     }
     catch(err)
     {
