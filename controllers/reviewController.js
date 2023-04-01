@@ -10,9 +10,9 @@ const createReview = async (req, res) => {
         let BookId = req.params.bookId
         
         let data = req.body
-        console.log(data)
-        let { review, rating, reviewedBy, userId ,userid, ...rest } = data
-
+        
+        let { review, rating, reviewedBy,userId,userid, ...rest } = data
+console.log(data)
         if (!ObjectId.isValid(BookId)) { return res.status(400).send({ status: false, message: `This BookId: ${BookId} is not Valid.` }) }
 
         if (!checkInputsPresent(data)) { return res.status(400).send({ status: false, message: "Please Provide Details to Create Review." }) }
@@ -25,7 +25,7 @@ const createReview = async (req, res) => {
         if (data.hasOwnProperty('reviewedBy')) {
             if (!checkString(reviewedBy) || !validateName(reviewedBy)) return res.status(400).send({ status: false, message: "Please Provide Valid Name in reviewedBy or Delete the key()." });
         }
-
+        
         // if (data.hasOwnProperty('review')) {
         //     if (!checkString(review) || !validateName(review)) return res.status(400).send({ status: false, message: "Please Provide Valid Review." });
         // }
@@ -41,11 +41,14 @@ const createReview = async (req, res) => {
 
         data.bookId = BookId
         data.reviewedAt = Date.now()
-
+        // console.log(data)
         let createReview = await reviewModel.create(data)
+        // console.log(data)
 //increasing revire count
         let updateBookData = await bookModel.findByIdAndUpdate({ _id: BookId }, { $inc: { reviews: 1 } }, { new: true })
 
+        if(reviewedBy !== "Guest"){
+            console.log("50")
         let details = {
             _id: createReview._id,
             bookId: BookId,
@@ -53,14 +56,27 @@ const createReview = async (req, res) => {
             reviewedAt: createReview.reviewedAt,
             rating: createReview.rating,
             review: createReview.review,
-            userId: userId,
-            userid: userid
+            userId: data.userId,
+            userid: data.userid
         }
-
         updateBookData._doc.reviewsData = details
         console.log(updateBookData)
-        res.status(201).send({ status: true, message: "Review added successfully", data: updateBookData })
-
+       return res.status(201).send({ status: true, message: "Review added successfully", data: updateBookData })
+ 
+    }else{
+            let details = {
+                _id: createReview._id,
+                bookId: BookId,
+                reviewedBy: createReview.reviewedBy,
+                reviewedAt: createReview.reviewedAt,
+                rating: createReview.rating,
+                review: createReview.review,
+        } 
+    
+        updateBookData._doc.reviewsData = details
+        console.log(updateBookData)
+        return res.status(201).send({ status: true, message: "Review added successfully", data: updateBookData })
+    }
     } catch (error) {
 
         res.status(500).send({ status: 'error', error: error.message })
@@ -91,7 +107,7 @@ const updateReview = async function (req, res) {
         const bookId = req.params.bookId;
         const reviewId = req.params.reviewId
         const data = req.body
-        const { review, rating, reviewedBy } = data;
+        const { review, rating } = data;
     
     
         if (!isValidObjectId(bookId)) return res.status(400).send({ status: false, msg: "bookId not valid" })  
@@ -101,16 +117,16 @@ const updateReview = async function (req, res) {
         if (!checkInputsPresent(data))  return res.status(400).send({ status: false, msg: "please provide some data to update review" })
         
          let Obj1={}         
-            if(reviewedBy){
-                if (!validateName(reviewedBy)) {
-                    return res.status(400).send({ status: false, msg: "reviewerName should be in proper format" })
-                }
+        //     if(reviewedBy){
+        //         if (!validateName(reviewedBy)) {
+        //             return res.status(400).send({ status: false, msg: "reviewerName should be in proper format" })
+        //         }
     
-                    Obj1.reviewedBy=reviewedBy
-            }
+        //             Obj1.reviewedBy=reviewedBy
+        //     }
            
        if(rating){
-        if((rating<1 || rating>5) || typeof(rating)!=='number') return res.status(400).send({status:false,message:"Please enter valid rating (number) in between range (1 to 5)."})
+        if((rating<1 || rating>5) || typeof(+rating)!=='number') return res.status(400).send({status:false,message:"Please enter valid rating (number) in between range (1 to 5)."})
         Obj1.rating=rating
        }
         

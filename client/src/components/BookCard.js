@@ -24,12 +24,12 @@ export default function BookCard({
   time,
   id,
 }) {
-  
+  console.log(id)
   let userId = localStorage.getItem("userId"), isLogin = userId ? true : false;
   const navigate = useNavigate();
   //edit
   const handleEdit = () => {
-    navigate(`/book-details/${id}`);
+    // navigate(`/book-details/${id}`);
   };
 
   //delete
@@ -50,12 +50,8 @@ export default function BookCard({
   }
   //showMore
   const handleShowMore = () => {
-    if(isLogin){
-      let showMore = true
-    navigate(`/show-more/${id}`)
-  }else{
-    navigate(`/login`)
-  }
+    navigate(`/show-more/${id}`)     //ye bas pathh h , iske main folder ka nam app.js me likha h
+
   }
 
   return (
@@ -71,7 +67,7 @@ export default function BookCard({
           boxShadow: "10px 10px 20px #ccc",
         },
       }}>
-        <Box sx={{ display: "flex" }}>
+        {/* <Box sx={{ display: "flex" }}>
     {isUser && showMore && (
       <>
         <Box>
@@ -86,7 +82,7 @@ export default function BookCard({
         </Box>
       </>
     )}
-  </Box>  
+  </Box>   */}
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">

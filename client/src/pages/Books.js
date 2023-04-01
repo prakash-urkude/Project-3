@@ -19,9 +19,8 @@ const Books = () => {
     }
     useEffect(() => {
       getAllBooks()
-
     }, [])
-
+console.log(localStorage)
     return ( 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gridTemplateRows: "repeat(4, 1fr)", gap: "1rem" }}>
             { books && 

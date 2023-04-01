@@ -40,7 +40,7 @@ const createBook = async function(req, res){
     try {
         let data = req.body
         let { title, excerpt, userId, ISBN, category, subcategory,releasedAt,image} = data
-        // console.log(data)
+        console.log(data)
 
         if(!image) return res.status(400).send({status:false, message:"please provide image"})
         if (!checkInputsPresent(data)) return res.status(400).send({ status: false, message: "No data found from body!" })
@@ -133,12 +133,13 @@ try{
     if(!findId) return res.status(404).send({status:false,message:"No book exist with this Id"})
     if(findId.isDeleted) return res.status(404).send({status:false,message:"The book you are trying to find is deleted"})
   
-    const review= await reviewModel.find({bookId:findId._id, isDeleted:false}).select({ _id: 1, bookId: 1, reviewedBy: 1, reviewedAt: 1, rating: 1, review: 1 })
+    const review= await reviewModel.find({bookId:findId._id, isDeleted:false}).select({ _id: 1, bookId: 1, reviewedBy: 1,ISBN:1, reviewedAt: 1, rating: 1, review: 1, userId:1, userid:1 })
     const details={
         _id:findId._id,
         title:findId.title,
         excerpt:findId.excerpt,
         userId:findId.userId,
+        ISBN:findId.userId,
         category:findId.category,
         subcategory:findId.subcategory,
         reviews:findId.reviews,
@@ -149,7 +150,7 @@ try{
         reviewData:review,
         image:findId.image
     }
-    
+    console.log(review)
     return res.status(200).send({status:true,message:"book List", book: details})
 }catch(error){
     return res.status(500).send({status:false,message:error.message})

@@ -19,23 +19,28 @@ import ReviewCard from "../components/ReviewCard";
 import { useNavigate } from "react-router-dom";
 
 const ShowMore = () => {
-  const { id } = useParams();
+  const { id } = useParams(); //bookid
+  // console.log(id)
   const [bookData, setBookData] = useState({});
   const [review, setReview] = useState("");
   const [rating, setRating] = useState(0);
   const [isUser, setIsUser] = useState(false);
   const name = localStorage.getItem("name");
-  const userId = localStorage.getItem("userId"), isLogin = userId ? true : false;
+
+ console.log(localStorage)
+  var userId = localStorage.getItem("userId"), isLogin = userId ? true : false;
 
   // var isUser = false
    const navigate = useNavigate();
-  //edit
-  const handleEdit = () => {
+
+  //edit book
+  const handleEditBook = () => {
     navigate(`/book-details/${id}`);
   };
+  
 
-  //delete
-  const handleDelete = async () => {
+  //delete book
+  const handleDeleteBook = async () => {
     try {
       const confirmed = window.confirm("Are you sure you want to delete?");
       if (confirmed) {
@@ -51,16 +56,18 @@ const ShowMore = () => {
     }
   }
 
+
+
   // get bookData
   async function getBookDetail() {
     try {
       const response = await axios.get(`http://localhost:3001/get-book/${id}`);
       if (response && response.data) {
-        console.log(response.data.book.userId)
+        console.log(response)
         const isUser = userId === response.data.book.userId?true:false
        await setBookData(response.data);
        await setIsUser(isUser);
-        console.log(userId, bookData)
+        
       }
     } catch (error) {
       window.alert(error.response.data.message);
@@ -71,35 +78,60 @@ const ShowMore = () => {
     getBookDetail();
   }, [id]);
   
-  
 
-// console.log(bookData.book.userId) 
+console.log(bookData.book) 
 
 
-//create card
+//create reviewCard
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      if(localStorage.length ==0){
+      localStorage.setItem("isLogin","false")
+      if(localStorage.getItem("isLogin") == "false"){
+      let name = "Guest"
+      localStorage.setItem("reviewid",id)
+      console.log("98")
       const { data } = await axios.post(`http://localhost:3001/books/${id}/review`, {
+
+        review:review,
+        rating:rating,
+        reviewedBy: name
+      });
+      console.log(data)
+      setReview("")
+      setRating(0)
+
+      if (data) {
+        window.alert("Review added.");
+      }}
+    }else{
+      
+        const { data } = await axios.post(`http://localhost:3001/books/${id}/review`, {
+
         review:review,
         rating:rating,
         reviewedBy: name,
         userId: userId,
         userid: userId
       });
-      // window.location.reload();
+      console.log(data)
       setReview("")
       setRating(0)
 
       if (data) {
         window.alert("Review added.");
+        navigate(`/show-more/${id}`);
       }
+      }
+      
     } catch (error) {
       alert(error.response.data.message);
     }
   };
-  // console.log(bookData)
-console.log(isUser)
+  console.log(localStorage)
+console.log(bookData)
+
   return (
     <div style={{ position: 'relative', width: '45%', height: '600px' }}>
       {bookData && (
@@ -135,11 +167,11 @@ console.log(isUser)
     (
       <>
         <Box display={"flex"}>
-          <IconButton onClick={handleEdit} sx={{ marginLeft: "auto" }}>
+          <IconButton onClick={handleEditBook} sx={{ marginLeft: "auto" }}>
             <ModeEditIcon color="info" />
           </IconButton >
         
-          <IconButton onClick={handleDelete}>
+          <IconButton onClick={handleDeleteBook}>
             <DeleteIcon color="error" />
           </IconButton>
         </Box>
@@ -175,7 +207,7 @@ console.log(isUser)
                   id='review'
                   name='review'
                   value={review}
-                  onChange={(e) => setReview(e.target.value)}
+                  onChange={(e) => setReview(e.target.value)}          //handle review
                   rows={4}
                   cols={50}
                   style={{ width: '100%', maxHeight: '200px', resize: 'none' }} 
@@ -187,20 +219,24 @@ console.log(isUser)
         
         </Box> 
           </form>
+
           <Box style={{ margin: "1rem 0" }}>
-              <Slider dots={true} infinite={true} slidesToShow={1} slidesToScroll={1} >
+              <Slider infinite={true} slidesToShow={1} slidesToScroll={1} >
                {bookData.book &&
                   bookData.book.reviewData.map((review) => (
                     <div style={{ margin: "8 8rem" }}>
                      <ReviewCard
+            bookid = {id}         
             name={review.reviewedBy}
-            id={review._id}
-            isUser={localStorage.getItem("userId") === review._id}
+            reviewid={review._id}
+            userid = {review.userid}
+            isUser={localStorage.getItem("userId") === review.userid }
             rating={review.rating}
             review={review.review}
           />
         </div>
       ))}
+
   </Slider>
 </Box>
 

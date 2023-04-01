@@ -8,6 +8,7 @@ import CreateBook from "./pages/CreateBook";
 import BookDetails from "./pages/BookDetails";
 import Userbooks from "./pages/UserBooks";
 import ShowMore from "./components/ShowMore";
+import ReviewDetails from "./pages/ReviewDetails";
 
 
 function App() {
@@ -23,9 +24,11 @@ function App() {
       <Route path="/createBook" element={<CreateBook/>} />
       <Route path="/book-details/:id" element={<BookDetails/>} />
       <Route path="/my-books" element={<Userbooks/>} />
+      <Route path="/book-details/:bookid/review-details/:reviewid" element={<ReviewDetails/>} />
     </Routes>
     </BrowserRouter>
   );
 }
+
 
 export default App;

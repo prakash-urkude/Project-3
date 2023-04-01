@@ -36,12 +36,10 @@ const reviewModel = new mongoose.Schema({
     },
     userId:{
         type: ObjectId,
-        required: true,
         ref: "user"
     },
     userid:{
-        type: ObjectId,
-        required:true
+        type: ObjectId,  
     }
 
 

@@ -9,6 +9,7 @@ const Login = () => {
         email :"",
         password: "",
     })
+    localStorage.clear()
     const handleChange=(e) =>{
         setInputs((prevState)=>({
         ...prevState,
@@ -22,9 +23,9 @@ const Login = () => {
                 email:inputs.email,
                 password: inputs.password,
             });
-            console.log(data)
+            
             if (data.status) {
-                console.log(data);
+                
               
                 if (data.data.token) {
                   localStorage.setItem("token", data.data.token);
@@ -35,6 +36,10 @@ const Login = () => {
                 if (data.data.userId.name) {
                     localStorage.setItem("name", data.data.userId.name);
                   }
+                  if (data) {
+                    localStorage.setItem("isLogin", true);
+                  }
+                
                 console.log(localStorage);
                 window.alert("Successfully Login");
                 navigate("/");

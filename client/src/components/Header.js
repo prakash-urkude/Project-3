@@ -1,5 +1,8 @@
 import React, {useState} from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import CardHeader from "@mui/material/CardHeader";
+import Avatar from "@mui/material/Avatar";
+import { red } from "@mui/material/colors";
 import {
   Box,
   AppBar,
@@ -21,18 +24,21 @@ function Header() {
     const navigate = useNavigate()
     //state of value
     const [value, setValue] = useState(0)
+    let name = localStorage.getItem("name")
+    console.log(name)
     //logout
     const handleLogout = () => {
       const confirmed = window.confirm("Are you sure you want to log out?");
       console.log(confirmed)
       if (confirmed) {
-        localStorage.setItem("token", "");
-        localStorage.setItem("userId", "");
+        localStorage.clear()
         window.alert("logout successfully")
       
         navigate("/");
       }
-    };
+      let name = localStorage.getItem("name")
+      console.log(name)
+    }; 
     return (
         <>
         <AppBar position="sticky" style={{ backgroundColor: '#f50057' }}>
@@ -57,21 +63,43 @@ function Header() {
                 <Button
                   sx={{ margin: 1, color: "white" }}
                   LinkComponent={Link}
+                  to="/"
+                  > Home
+                </Button>
+
+                <Button
+                  sx={{ margin: 1, color: "white" }}
+                  LinkComponent={Link}
                   to="/login"
-                    > Login</Button>
-                    <Button sx={{ margin: 1, color: "white" }}
-                    LinkComponent ={Link}
-                    to = "/register"
-                    >Register</Button>
+                  > Login
+                </Button>
+
+                <Button 
+                  sx={{ margin: 1, color: "white" }}
+                  LinkComponent ={Link}
+                  to = "/register"
+                  >Register
+                  </Button>
                   </>
                   )}
-                  {isLogin && (
-                    <Button sx={{ margin: 1, color: "white" }}
-                    onClick ={handleLogout}
-                  >
-                    Logout
-                    </Button>
-                    )}
+                 {isLogin && (
+  <React.Fragment>
+    <CardHeader
+      avatar={
+        <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+          {name}
+        </Avatar>
+      }
+    />
+    <Button
+      sx={{ margin: 1, color: "white" }}
+      onClick={handleLogout}
+    >
+      Logout
+    </Button>
+  </React.Fragment>
+)}
+
                 </Box>
             </Toolbar>
           </AppBar>
