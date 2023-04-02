@@ -6,6 +6,10 @@ const bookSchema = new mongoose.Schema(
             type: String,
             required: [true, "image is require"],
           },
+          bookUrl:{
+            type: String,
+            required: [true,"bookURL is required"]
+          },
         title: {
             type: String,
             required: true,

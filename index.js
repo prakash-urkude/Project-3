@@ -1,4 +1,7 @@
 const express = require("express");
+
+var bodyParser = require('body-parser');
+
 const cors = require("cors");
 const morgan = require("morgan");
 const colors = require("colors");
@@ -6,6 +9,17 @@ const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 
 
+//rest objecct
+const app = express();
+
+//multer
+const multer= require("multer");
+//aws
+const { AppConfig } = require('aws-sdk');
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use( multer().any())
 //env config
 dotenv.config();
 
@@ -15,8 +29,7 @@ const routes = require("./routes/route")
 //mongodb connection
 connectDB();
 
-//rest objecct
-const app = express();
+
 
 //middelwares
 app.use(cors());

@@ -1,3 +1,5 @@
+const aws = require('aws-sdk');
+
 const bookModel = require('../models/bookModel');
 const userModel = require('../models/userModel');
 const reviewModel= require('../models/reviewModel')
@@ -37,10 +39,61 @@ const{ isValidObjectId }=require("mongoose")
 // }
 
 const createBook = async function(req, res){
+
     try {
+
+//AWS - id, bucket Code, fileLocation
+      aws.config.update({
+        accessKeyId: "AKIAY3L35MCRZNIRGT6N",
+        secretAccessKey: "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",
+        region: "ap-south-1"
+    })
+    
+    let uploadFile= async ( file) =>{
+       return new Promise( function(resolve, reject) {
+        // this function will upload file to aws and return the link
+        let s3= new aws.S3({apiVersion: '2006-03-01'}); // we will be using the s3 service of aws
+    
+        var uploadParams= {
+            ACL: "public-read",
+            Bucket: "classroom-training-bucket",  //HERE
+            Key: "abc/" + file.originalname, //HERE 
+            Body: file.buffer
+        }
+    
+    
+        s3.upload( uploadParams, function (err, data ){
+            if(err) {
+                return reject({"error": err})
+            }
+            console.log(data)
+            console.log("file uploaded succesfully")
+            return resolve(data.Location)
+        })
+    
+        // let data= await s3.upload( uploadParams)
+        // if( data) return data.Location
+        // else return "there is an error"
+    
+       })
+    }
+
+//uploeadfile - AWS
+      let files= req.files
+      if(files && files.length>0){
+          //upload to s3 and get the uploaded link
+          // res.send the link back to frontend/postman
+          var uploadedFileURL= await uploadFile( files[0] )
+          // console.log("1")
+          // console.log(uploadedFileURL)
+          // console.log("2")
+
+
+//req.body
         let data = req.body
         let { title, excerpt, userId, ISBN, category, subcategory,releasedAt,image} = data
-        console.log(data)
+        data.bookUrl = uploadedFileURL
+        // console.log(data)
 
         if(!image) return res.status(400).send({status:false, message:"please provide image"})
         if (!checkInputsPresent(data)) return res.status(400).send({ status: false, message: "No data found from body!" })
@@ -83,6 +136,10 @@ const createBook = async function(req, res){
 
         res.status(201).send({ status: true, message: `This ${title} Book is created sucessfully.`, data: createBook })
 
+      }
+      else{
+          res.status(400).send({ msg: "No file found" })
+      }
     } catch (error) {
 
         res.status(500).send({ status: 'error', error: error.message })

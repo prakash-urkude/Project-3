@@ -115,7 +115,7 @@ console.log(bookData.book)
         userId: userId,
         userid: userId
       });
-      console.log(data)
+      // console.log(data)
       setReview("")
       setRating(0)
 
@@ -129,8 +129,8 @@ console.log(bookData.book)
       alert(error.response.data.message);
     }
   };
-  console.log(localStorage)
-console.log(bookData)
+  // console.log(localStorage)
+// console.log(bookData)
 
   return (
     <div style={{ position: 'relative', width: '45%', height: '600px' }}>

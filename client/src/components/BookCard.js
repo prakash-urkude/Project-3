@@ -23,6 +23,7 @@ export default function BookCard({
   isUser,
   time,
   id,
+  
 }) {
   console.log(id)
   let userId = localStorage.getItem("userId"), isLogin = userId ? true : false;

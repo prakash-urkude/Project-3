@@ -18,6 +18,7 @@ import  "../App.css"
 const CreateBook = () => {
   const id = localStorage.getItem("userId");
   const navigate = useNavigate();
+  const [file, setFile] = useState(null);
   const [inputs, setInputs] = useState({
     title: "",
     excerpt: "",
@@ -42,22 +43,32 @@ const images = [
       ...prevState,
       [e.target.name]: e.target.value
     }));
-  };
 
+  };
+  const handleChangeFile = (e) => {
+    setFile(e.target.files[0]);
+  };
+  
   //form
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post("http://localhost:3001/createBook", {
-        title: inputs.title,
-        excerpt: inputs.excerpt,
-        image: inputs.image,
-        userId: id,
-        ISBN: inputs.ISBN,
-        category: inputs.category,
-        subcategory: inputs.subcategory,
-        releasedAt: inputs.releasedAt
-      });
+      const formData = new FormData();
+      formData.append("title", inputs.title);
+      formData.append("excerpt", inputs.excerpt);
+      formData.append("image", inputs.image);
+      formData.append("userId", id);
+      formData.append("ISBN", inputs.ISBN);
+      formData.append("category", inputs.category);
+      formData.append("subcategory", inputs.subcategory);
+      formData.append("releasedAt", inputs.releasedAt);
+      formData.append("file", file);
+      
+      const { data } = await axios.post("http://localhost:3001/createBook", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+    });
       console.log(data);
       if (data?.status) {
         window.alert("Book Created");
@@ -152,8 +163,8 @@ const images = [
             Excerpt
           </InputLabel>
           <TextField
-            name="description"
-            value={inputs.description}
+            name="excerpt"
+            value={inputs.excerpt}
             onChange={handleChange}
             margin="normal"
             variant="outlined"
@@ -207,6 +218,7 @@ const images = [
           >
             subcategory
           </InputLabel>
+          
           <TextField
             name="subcategory"
             value={inputs.subcategory}
@@ -216,6 +228,22 @@ const images = [
             required
             sx={{ width: '80%' }}
           />
+          <InputLabel
+            sx={{ mb: 1, mt: 2,fontSize: "100%", fontWeight: "bold" }}
+          >
+            file
+          </InputLabel>
+          <TextField
+            name ="file"
+            type="file"
+            // value={file.file}
+            onChange ={handleChangeFile}
+            margin = "normal"
+            variant = "outlined"
+            required
+            sx ={{width: "80%"}}
+            />
+          
           <InputLabel
             sx={{ mb: 1, mt: 2, fontSize: "100%", fontWeight: "bold" }}
           >
