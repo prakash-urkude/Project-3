@@ -27,7 +27,7 @@ const ShowMore = () => {
   const [isUser, setIsUser] = useState(false);
   const name = localStorage.getItem("name");
 
- console.log(localStorage)
+//  console.log(localStorage)
   var userId = localStorage.getItem("userId"), isLogin = userId ? true : false;
 
   // var isUser = false
@@ -63,7 +63,7 @@ const ShowMore = () => {
     try {
       const response = await axios.get(`http://localhost:3001/get-book/${id}`);
       if (response && response.data) {
-        console.log(response)
+        // console.log(response)
         const isUser = userId === response.data.book.userId?true:false
        await setBookData(response.data);
        await setIsUser(isUser);
@@ -79,7 +79,25 @@ const ShowMore = () => {
   }, [id]);
   
 
-console.log(bookData.book) 
+// console.log(bookData.book.bookUrl) 
+
+//DOWNLOAD
+const handleDownload = async(e) =>{
+  e.preventDefault();
+  try{
+    if(isUser){
+      console.log(isUser)
+     const confirmed = window.confirm("Are you sure you want to download?");
+    if (confirmed) {
+window.open(bookData.book.bookUrl);
+  }}else{
+    navigate("/login")
+  }
+}catch(error){
+    window.alert(error.responce.data.message)
+  }
+
+}
 
 
 //create reviewCard
@@ -156,15 +174,12 @@ console.log(bookData.book)
             }}
           >
             {bookData.book && (
-              <Box style={{ display: "grid",  gridTemplateRows: "repeat(3, 1fr)", gap: "1rem" }}>
-            <Typography gutterBottom variant='h5' component='div' >
+             <Box sx={{ display: "flex", alignItems: "center" }}>
+             <Typography gutterBottom variant='h5' component='div' sx={{ marginRight: "auto" }}>
               {bookData.book.title}
             </Typography>
-            <Box sx={{ display: "flex" }}>
-            {
-
-    isUser &&
-    (
+            
+            {isUser &&(
       <>
         <Box display={"flex"}>
           <IconButton onClick={handleEditBook} sx={{ marginLeft: "auto" }}>
@@ -177,11 +192,18 @@ console.log(bookData.book)
         </Box>
       </>
     )}
-  </Box>
             </Box>
             )}
+                <br/>
+        <Box  sx={{ display: "flex" }}>
+        <Button style={{ margin: '5px' }} component='div' gutterBottom variant="contained" color="success" 
+         onClick={handleDownload}>
+        DOWNLOAD
+</Button>
+          <br/>
+        </Box >
             {bookData.book && (
-            <Typography variant='body2' color='text.secondary'>
+            <Typography variant='body2' color='text.secondary'style={{ margin: '5px' }}>
               {bookData.book.excerpt}
             </Typography>
             )}

@@ -205,9 +205,10 @@ try{
         createdAt:findId.createdAt,
         updatedAt:findId.updatedAt,
         reviewData:review,
-        image:findId.image
+        image:findId.image,
+        bookUrl: findId.bookUrl
     }
-    console.log(review)
+    // console.log(review)
     return res.status(200).send({status:true,message:"book List", book: details})
 }catch(error){
     return res.status(500).send({status:false,message:error.message})

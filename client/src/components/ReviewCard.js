@@ -53,10 +53,13 @@ export default function ReviewCard({
   return (
     <Card sx={{ width: '100%', backgroundColor: '#f1ee8e' }}>
       <CardContent>
-      <Box sx={{ display: "flex" }}>
-      {
-      isUser &&
-      (
+      <Box sx={{ display: "flex" , alignItems: "center" }}>
+        <Typography gutterBottom variant="h5" component="div" sx={{ marginRight: "auto" }} >
+          {name}
+        </Typography>
+
+        
+      {isUser &&(
       <>
       <Box display={"flex"}>
           <IconButton onClick={handleEditReview} sx={{ marginLeft: "auto" }}>
@@ -70,9 +73,7 @@ export default function ReviewCard({
       </>
     )}
   </Box>
-        <Typography gutterBottom variant="h5" component="div">
-          {name}
-        </Typography>
+  <br/>
         <Rating 
           value={rating}
           readOnly
@@ -81,6 +82,7 @@ export default function ReviewCard({
            <Typography variant="body2" color="text.secondary">
           {review}
         </Typography>
+        
       </CardContent>
     </Card>
   );

@@ -45,12 +45,15 @@ function Header() {
             <Toolbar>
               <Typography variant="h3" >ρΛᗪ𐋏Λ𝔦 - 𝕃𝕀𝕂ℍ𝔸𝕀</Typography>
                 {isLogin && (
+                  
+                
                   <Box display={"flex"} marginLeft="auto" marginRight={"auto"}>
                   <Tabs
                   textColor ="inherit"
                   value ={value}
                   onChange={(e,val) => setValue(val)}
                   >
+                  <Tab label="About" LinkComponent={Link} to="/AboutUs" />                     
                   <Tab label="Books" LinkComponent={Link} to="/" /> 
                   <Tab label=" My Books" LinkComponent={Link} to="/my-books" />
                   <Tab label=" Create Books " LinkComponent={Link} to="/createBook" />
@@ -65,6 +68,12 @@ function Header() {
                   LinkComponent={Link}
                   to="/"
                   > Home
+                </Button>
+                <Button
+                  sx={{ margin: 1, color: "white" }}
+                  LinkComponent={Link}
+                  to="/AboutUs"
+                  > AboutUs
                 </Button>
 
                 <Button

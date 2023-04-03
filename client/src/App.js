@@ -1,4 +1,5 @@
 import Header from "./components/Header"
+import Footer from "./components/Footer"
 import './App.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Register from "./pages/Register";
@@ -9,13 +10,15 @@ import BookDetails from "./pages/BookDetails";
 import Userbooks from "./pages/UserBooks";
 import ShowMore from "./components/ShowMore";
 import ReviewDetails from "./pages/ReviewDetails";
-
+import AboutUs from "./pages/AboutUs";
 
 function App() {
   return (
     <BrowserRouter>
     <Header/>
+    <Footer/>
     <Routes>
+      <Route path="/AboutUs" element= {<AboutUs/>} />
       <Route path="/show-more/:id" element= {<ShowMore/>} />
       <Route path="/register" element = {<Register/>} />
       <Route path="/" element = {<Books/>} />
