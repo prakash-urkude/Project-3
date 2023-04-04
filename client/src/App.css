@@ -42,6 +42,14 @@
   margin: 0 auto;
 }
 
+.icons{
+  display: flex;
+  gap: 5rem;
+  justify-content: center;
+}
+
+
+
 body {
   font-family: Arial, Helvetica, sans-serif;
   margin: 0;
@@ -69,32 +77,66 @@ html {
 
 .column2 {
   
-  width: 43.3%;
+  width: 93%;
   margin-bottom: 16px;
   padding: 0 8px;
   position: absolute;
   top: 50%;
   left: 80px;
   transform: translateY(-50%);
+  background-color: #ffffff;
  
 }
 
-.card {
+.card1 {
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2);
+  margin: 8px;
+  text-align: center;
+  /* background-color: #1c2c4c; */
+  /* border-radius: 8px; */
+  padding: 16px;
+  width: 100%;
+  max-width: 55%;
+  color: #000000;
+  background-color: #ffffff;
+  border-radius: 5%;
+}
+
+.heading {
+  color: #0a53e4;
+  font-size: 3.5rem;
+}
+
+.paragraph {
+    color: #050233;
+    font-size: 2.5rem;
+  }
+
+.paragraph1 {
+    color: #333158;
+    font-size: 1.5rem;
+  }
+  .heading2 {
+    color: #ffffff;
+   
+  }
+
+.card2 {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   margin: 8px;
   text-align: center;
-  background-color: #ffffff;
+  background-color: #1c2c4c;
   border-radius: 8px;
   padding: 16px;
   width: 100%;
-  max-width: 600px;
-  color: #000000;
+  max-width: 800px;
+  color: #1c2c4c;
 }
 
 
 
 .about-section {
-  padding: 50%;
+  padding: 23%;
   text-align: center;
   background-color: #eceff3;
   color: white;

@@ -12,6 +12,8 @@
   "author": "Prakash Urkude",
   "license": "ISC",
   "dependencies": {
+    "@material-ui/core": "^4.12.4",
+    "@material-ui/icons": "^4.11.3",
     "aws-sdk": "^2.1348.0",
     "bcrypt": "^5.1.0",
     "colors": "^1.4.0",

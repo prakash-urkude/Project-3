@@ -43,7 +43,7 @@ function Header() {
         <>
         <AppBar position="sticky" style={{ backgroundColor: '#f50057' }}>
             <Toolbar>
-              <Typography variant="h3" >ρΛᗪ𐋏Λ𝔦 - 𝕃𝕀𝕂ℍ𝔸𝕀</Typography>
+              <Typography variant="h3" >𝓛𝒾𝕍𝓔Ɫ𝕪 β∞𝕂s</Typography>
                 {isLogin && (
                   
                 
