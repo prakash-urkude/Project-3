@@ -25,13 +25,13 @@ const AboutUs = () => {
               <h2 class="heading2">Prakash Urkude</h2>
               <p class="title">CEO & Founder</p>
               <div class="icons">
-                <a href="https://github.com/your-github-username">
+                <a href="https://github.com/prakash-urkude">
                   <GitHubIcon />
                 </a>
-                <a href="mailto:your-email-address">
+                <a href="mailto:prakashurkude42416@gmail.com">
                   <MailOutlineIcon />
                 </a>
-                <a href="https://www.linkedin.com/in/your-linkedin-profile">
+                <a href="https://www.linkedin.com/in/prakash-urkude-20ba41244/">
                   <LinkedInIcon />
                 </a>
               </div>
