@@ -58,8 +58,8 @@ export default function BookCard({
   return (
     <Card
       sx={{
-        width: "300px",
-        height: "400px",
+        width: "400px",
+        height: "500px",
         margin: "auto",
         mt: 2,
         padding: 2,
@@ -86,14 +86,14 @@ export default function BookCard({
   </Box>   */}
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+          <Avatar sx={{ bgcolor: red[700] }} aria-label="recipe">
             {username}
           </Avatar>
         }
         title={username}
         subheader={time}
       />
-      <CardMedia component="img" height="194" image={image} alt="Paella dish" />
+      <CardMedia component="img" height="285" image={image} alt="Paella dish" />
       <CardContent>
         <Typography variant="h6" color="text.secondary">
           Title : {title}

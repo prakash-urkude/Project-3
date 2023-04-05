@@ -75,7 +75,7 @@ const images = [
         navigate("/");
       }
     } catch (error) {
-      window.alert(error);
+      window.alert(error.response.data.message);
     }
   };
 
@@ -150,6 +150,7 @@ const images = [
           </InputLabel>
           <TextField
             name="title"
+            placeholder="title should be less then 7 words"
             value={inputs.title}
             onChange={handleChange}
             margin="normal"

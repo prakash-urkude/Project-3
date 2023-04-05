@@ -76,7 +76,7 @@ const login = async function(req,res){
     
     if (!data2) { return res.status(401).send({ status: false, message: "Invalid Login Credentials! You need to register first." }) }
 
-    let token = Jwt.sign({ userId: data2['_id']}, "SubodhPal@123", { expiresIn:"10d" })
+    let token = Jwt.sign({ userId: data2['_id']}, "myFirstMERN", { expiresIn:"30d" })
 
     res.status(200).send({ status: true, message: "Token Created Sucessfully", data: {token:token , userId: data2}})
     }

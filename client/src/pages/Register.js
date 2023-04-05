@@ -2,6 +2,14 @@ import { Button, Box, TextField, Typography , Select, MenuItem ,InputLabel, Form
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom"
 import axios from "axios"
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import image4 from '../images/image-4.jpg';
+import image5 from '../images/image-5.jpg';
+import image6 from '../images/image-6.jpg';
+import image7 from '../images/image-7.jpg';
+import image8 from '../images/image-8.jpg';
 
 const Register = () => {
     const navigate = useNavigate();
@@ -16,6 +24,15 @@ const Register = () => {
         city:"",
         pincode:"",
     });
+
+      // imageArray
+const images = [
+    image4,
+    image5,
+    image6,
+    image7,
+    image8,
+  ];
 
     const handleChange =(e) =>{
         setInputs((prevState) => ({
@@ -45,31 +62,76 @@ const Register = () => {
     }
         catch(error){
            
-            window.alert(error.response.data.message )
+            window.alert(error.response.data.message)
         }
     }
+
+    const settings = {
+        dots: false,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 2000,
+        cssEase: "linear"
+      };
     return ( 
-        <>
+        <div style={{ position: 'absolute', width: '45%', height: '300px' }}>
+      <Box 
+         style={{
+          position: 'absolute',
+          top: '5%',
+          right: '-40%',
+          width: '150%',
+          border: '1px solid #ccc',
+          flexDirection: 'row',
+          height: '180%',
+          maxWidth: '135%',
+          objectFit: 'cover',
+          boxSizing: 'border-box',
+          overflow: 'hidden',
+        }}
+        
+          
+      >
+       <Slider {...settings}>
+        {images.map((image) => (
+          <div key={image}>
+            <img src={image} alt="Image 1" />
+          </div>
+        ))}
+      </Slider>
+      </Box>
+
         <form onSubmit = {handleSubmit}>
            <Box 
-           maxWidth={450}
-           display="flex"
-           flexDirection={"column"}
-           alignItems="center"
-           justifyContent={"center"}
-           margin="auto"
-           marginTop={5}
-           boxShadow="10px 10px 20px #ccc"
-           padding={3}
-           borderRadius={5}
+           style={{
+            position: 'absolute',
+            top: '5%',
+            left: '160%',
+            width: '50%',
+            border: '5px solid #ccc',
+            borderRadius: '5px',
+            padding: '2%',
+            flexDirection: "column",
+            maxHeight: '500px',
+            overflow: 'auto'
+          }}
            >
-            <Typography>
+            <Typography 
+            variant="h5"
+            textAlign={"center"}
+            fontWeight="bold"
+            padding="2%"
+            color="gray"
+            >
                 Register
             </Typography>
 
             <FormControl sx={{ m: 1, minWidth: 80 }}>
         <InputLabel id="demo-simple-select-autowidth-label">Title</InputLabel>
-       {/* {console.log(inputs)}  */}
+       
         <Select
           labelId="demo-simple-select-autowidth-label"
           id="demo-simple-select-autowidth"
@@ -159,14 +221,14 @@ const Register = () => {
             sx ={{borderRadius:3, marginTop:3}}
             varient = "contained"
             color = "primary"
-            >submit
+            >SUBMIT
             </Button >
             <Button 
             onClick ={() => navigate("/login")}>
             Already Registerd ? Please Login </Button>
             </Box> 
         </form>
-        </>
+        </div>
      );
 }
  
