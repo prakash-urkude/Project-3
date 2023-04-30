@@ -56,7 +56,7 @@ const images = [
             pincode: inputs.pincode,
         })
         if(data.status){
-            window.alert("User Registered sucessfully")
+            window.alert("User Registered sucecdssfully")
             navigate("/login")
         }
     }

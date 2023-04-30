@@ -96,7 +96,7 @@ function Header() {
     <CardHeader
       avatar={
         <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-          {name}
+         {name}
         </Avatar>
       }
     />

@@ -45,7 +45,8 @@ const Login = () => {
                 navigate("/");
               }
         }catch(error){
-            window.alert(error.responce.data.message);
+          // console.log(error.response.data.message)
+            window.alert(error.response.data.message);
         }
     }
     return (
@@ -58,7 +59,7 @@ const Login = () => {
 //   height="100vh"
 >
   <Box
-  
+
     display="flex"
     width={500}
     flexDirection="column"
