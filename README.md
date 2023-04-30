@@ -12,13 +12,13 @@ Html, Css, React.js,
 
  - here are some pictures that will help you
  
- ## home page
+ ## Home Page
  ![book1](https://user-images.githubusercontent.com/115548645/235360011-29794e88-3644-43f6-af22-2607896bb804.PNG)
 
- ## show more that contain slider for review 
+ ## Show More That Contain Slider For Review 
 ![book2](https://user-images.githubusercontent.com/115548645/235360025-d85da1b2-6a8d-42fe-9399-d2733d33095f.PNG)
 
- ## form pages with carousel 
+ ## Form Pages With Carousel 
 ![book3](https://user-images.githubusercontent.com/115548645/235360032-e429031f-43df-4354-bce7-26426585c6eb.PNG)
 
  ## About Us
