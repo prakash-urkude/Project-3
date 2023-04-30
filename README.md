@@ -1,7 +1,35 @@
-# Lithium
+## Project:- 𝓛𝒾𝕍𝓔Ɫ𝕪 β∞𝕂s (Books Management App)
 
-## Project - Books Management
+ - This is simple book management which help people to store there fav. books.
+ - here user can see or comment or rate book with out login
+ - after login user can add and download book pdf.
+ - logged user can update , delete there own books too ,( if they want)
+ 
+ ## (Frontend Part)
 
+## TechStack 
+Html, Css, React.js,
+
+ - here are some pictures that will help you
+ 
+ ## home page
+ ![book1](https://user-images.githubusercontent.com/115548645/235360011-29794e88-3644-43f6-af22-2607896bb804.PNG)
+
+ ## show more that contain slider for review 
+![book2](https://user-images.githubusercontent.com/115548645/235360025-d85da1b2-6a8d-42fe-9399-d2733d33095f.PNG)
+
+ ## form pages with carousel 
+![book3](https://user-images.githubusercontent.com/115548645/235360032-e429031f-43df-4354-bce7-26426585c6eb.PNG)
+
+ ## About Us
+![Book4](https://user-images.githubusercontent.com/115548645/235360043-e7eb76d5-2caf-4205-a48f-f4e9677059b9.PNG)
+
+ 
+
+## (Backend Part)
+
+## TechStack 
+Node.js, Express.js, Jwt, MongoDB, AWS S3.
 ### Key points
 - Create a group database `groupXDatabase`. You can clean the db you previously used and resue that.
 - This time each group should have a *single git branch*. Coordinate amongst yourselves by ensuring every next person pulls the code last pushed by a team mate. You branch will be checked as part of the demo. Branch name should follow the naming convention `project/booksManagementGroupX`
